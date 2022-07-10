@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { User } from './user.entity';
-import { UserModel } from './user.model';
+import { UserDto } from './dto/userDto.dto';
+import { STATUS } from '../const/constants.const';
 
 @Injectable()
 export class UserService {
@@ -10,23 +11,41 @@ export class UserService {
     @InjectRepository(User)
     private readonly userRepo: Repository<User>,
   ) {}
-  async findAll(): Promise<User[]> {
-    return await this.userRepo.find();
+
+  async getByEmail(email: string) {
+    const user = await this.userRepo.findOneBy({ email });
+    if (user) {
+      return user;
+    }
+    throw new HttpException(
+      'User with this email does not exist',
+      HttpStatus.NOT_FOUND,
+    );
   }
 
-  async findOne(id: string): Promise<User> {
-    return await this.userRepo.findOneById(id);
+  async createUser(userData: UserDto) {
+    const newUser = await this.userRepo.create(userData);
+    await this.userRepo.save(newUser);
+    return newUser;
   }
 
-  async create(task: UserModel): Promise<User> {
-    return await this.userRepo.save(task);
+  async getById(id: number) {
+    const user = await this.userRepo.findOneBy({ id });
+    if (user) {
+      return user;
+    }
+    throw new HttpException(
+      'User with this id does not exist',
+      HttpStatus.NOT_FOUND,
+    );
   }
 
-  async update(task: UserModel): Promise<UpdateResult> {
-    return await this.userRepo.update(task.id, task);
-  }
-
-  async delete(id): Promise<DeleteResult> {
-    return await this.userRepo.delete(id);
+  async markEmailAsConfirmed(email: string) {
+    return this.userRepo.update(
+      { email },
+      {
+        status: STATUS.ACTIVE,
+      },
+    );
   }
 }
