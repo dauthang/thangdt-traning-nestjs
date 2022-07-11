@@ -9,10 +9,11 @@ export default class EmailService {
 
   constructor(private readonly configService: ConfigService) {
     this.nodemailerTransport = createTransport({
-      service: configService.get('EMAIL_SERVICE'),
+      host: 'smtp.sendgrid.net',
+      port: 587,
       auth: {
-        user: configService.get('EMAIL_USER'),
-        pass: configService.get('EMAIL_PASSWORD'),
+        user: configService.get('USER_MAIL'),
+        pass: configService.get('SEND_GRID_KEY'),
       },
     });
   }

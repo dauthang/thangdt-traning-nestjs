@@ -9,10 +9,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthGuard } from '@nestjs/passport';
-import { LocalAuthenticationGuard } from './localAuthentication.guard';
-import RequestWithUser from './requestWithUser.interface';
-import JwtAuthenticationGuard from './jwt-authentication.guard';
+import { LocalAuthenticationGuard } from './guards/localAuthentication.guard';
+import RequestWithUser from './interfaces/requestWithUser.interface';
+import JwtAuthenticationGuard from './guards/jwt-authentication.guard';
 import express, { Request, Response } from 'express';
 import { UserDto } from '../user/dto/userDto.dto';
 import { EmailConfirmationService } from '../email/services/emailConfirmation.service';
@@ -26,19 +25,19 @@ export class AuthController {
   @Post('register')
   async register(@Body() registrationData: UserDto) {
     const user = await this.authService.register(registrationData);
-    await this.emailConfirmationService.sendVerificationLink(
-      registrationData.email,
-    );
+    await this.emailConfirmationService.sendVerificationLink(registrationData);
     return user;
   }
 
   @HttpCode(200)
   @UseGuards(LocalAuthenticationGuard)
   @Post('log-in')
-  async logIn(@Req() request: RequestWithUser) {
-    const user = request.user;
+  async logIn(@Req() request: RequestWithUser, @Res() response: Response) {
+    const { user } = request;
+    const cookie = this.authService.getCookieWithJwtToken(user.id);
+    response.setHeader('Set-Cookie', cookie);
     user.password = undefined;
-    return user;
+    return response.send(user);
   }
 
   @UseGuards(JwtAuthenticationGuard)
@@ -54,17 +53,5 @@ export class AuthController {
     const user = request.user;
     user.password = undefined;
     return user;
-  }
-
-  @Get()
-  @UseGuards(AuthGuard('google'))
-  async googleAuth(@Req() req) {
-    // todo
-  }
-
-  @Get('auth/gooogle/callback')
-  @UseGuards(AuthGuard('google'))
-  googleAuthRedirect(@Req() req) {
-    return this.authService.googleLogin(req);
   }
 }

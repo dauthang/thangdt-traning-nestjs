@@ -5,6 +5,7 @@ import EmailService from '../email.service';
 import VerificationTokenPayload from '../interfaces/verificationTokenPayload.interface';
 import { UserService } from '../../user/user.service';
 import { STATUS } from '../../const/constants.const';
+import { UserDto } from '../../user/dto/userDto.dto';
 
 @Injectable()
 export class EmailConfirmationService {
@@ -16,7 +17,7 @@ export class EmailConfirmationService {
   ) {}
   public async confirmEmail(email: string) {
     const user = await this.usersService.getByEmail(email);
-    if (user.status !== STATUS.CONFIRM) {
+    if (STATUS.CONFIRM !== user.status) {
       throw new BadRequestException('Email already confirmed');
     }
     await this.usersService.markEmailAsConfirmed(email);
@@ -39,25 +40,35 @@ export class EmailConfirmationService {
       throw new BadRequestException('Bad confirmation token');
     }
   }
-  public sendVerificationLink(email: string) {
-    const payload: VerificationTokenPayload = { email };
+  public sendVerificationLink(user: UserDto) {
+    const payload: VerificationTokenPayload = {
+      name: user?.name,
+      email: user.email,
+    };
     const token = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_VERIFICATION_TOKEN_SECRET'),
       expiresIn: `${this.configService.get(
         'JWT_VERIFICATION_TOKEN_EXPIRATION_TIME',
-      )}s`,
+      )}`,
     });
 
-    const url = `${this.configService.get(
-      'EMAIL_CONFIRMATION_URL',
-    )}?token=${token}`;
+    const url = `${this.configService.get('EMAIL_CONFIRMATION_URL')}/${token}`;
 
-    const text = `Welcome to the application. To confirm the email address, click here: ${url}`;
+    const text = `Welcome to the application. To confirm the email, click here: ${url}`;
 
     return this.emailService.sendMail({
-      to: email,
+      from: '<thangdt@vmodev.com>',
+      to: `${user?.name} <${user.email}>`,
       subject: 'Email confirmation',
       text,
     });
+  }
+
+  public async resendConfirmationLink(userId: number) {
+    const user = await this.usersService.getById(userId);
+    if (STATUS.ACTIVE === user.status) {
+      throw new BadRequestException('Email already confirmed');
+    }
+    await this.sendVerificationLink(user);
   }
 }

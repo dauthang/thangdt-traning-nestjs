@@ -13,10 +13,10 @@ import * as bcrypt from 'bcrypt';
 import { ErrorCode, STATUS } from '../const/constants.const';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { LocalAuthenticationGuard } from './localAuthentication.guard';
-import RequestWithUser from './requestWithUser.interface';
+import { LocalAuthenticationGuard } from './guards/localAuthentication.guard';
+import RequestWithUser from './interfaces/requestWithUser.interface';
 import express, { Request, Response } from 'express';
-import { TokenPayload } from './tokenPayload.interface';
+import { TokenPayload } from './interfaces/tokenPayload.interface';
 import { UserDto } from '../user/dto/userDto.dto';
 @Injectable()
 export class AuthService {
@@ -45,16 +45,7 @@ export class AuthService {
       createdUser.password = undefined;
       return createdUser;
     } catch (error) {
-      if (error?.code === ErrorCode.UniqueViolation) {
-        throw new HttpException(
-          'User with that email already exists',
-          HttpStatus.BAD_REQUEST,
-        );
-      }
-      throw new HttpException(
-        'Something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new HttpException(error.response, error.status);
     }
   }
 
@@ -63,6 +54,12 @@ export class AuthService {
       const user = await this.usersService.getByEmail(email);
       await AuthService.verifyPassword(plainTextPassword, user.password);
       user.password = undefined;
+      if (STATUS.ACTIVE !== user.status) {
+        throw new HttpException(
+          'Please confirm your email address',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
       return user;
     } catch (error) {
       throw new HttpException(
@@ -86,17 +83,6 @@ export class AuthService {
         HttpStatus.BAD_REQUEST,
       );
     }
-  }
-
-  @HttpCode(200)
-  @UseGuards(LocalAuthenticationGuard)
-  @Post('log-in')
-  async logIn(@Req() request: RequestWithUser, @Res() response: Response) {
-    const { user } = request;
-    const cookie = this.getCookieWithJwtToken(user.id);
-    response.setHeader('Set-Cookie', cookie);
-    user.password = undefined;
-    return response.send(user);
   }
 
   public getCookieWithJwtToken(userId: number) {

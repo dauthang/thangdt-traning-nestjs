@@ -16,9 +16,8 @@ import * as Joi from 'joi';
         JWT_SECRET: Joi.string().required(),
         JWT_EXPIRATION_TIME: Joi.string().required(),
         EMAIL_CONFIRMATION_URL: Joi.string().required(),
-        EMAIL_SERVICE: Joi.string().required(),
-        EMAIL_USER: Joi.string().required(),
-        EMAIL_PASSWORD: Joi.string().required(),
+        USER_MAIL: Joi.string().required(),
+        SEND_GRID_KEY: Joi.string().required(),
       }),
     }),
     TypeOrmModule.forRootAsync({

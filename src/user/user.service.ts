@@ -24,8 +24,19 @@ export class UserService {
   }
 
   async createUser(userData: UserDto) {
+    const listUser = await this.userRepo
+      .createQueryBuilder('user')
+      .where('user.email = :email OR user.userName = :userName', {
+        email: userData?.email,
+        userName: userData?.userName,
+      })
+      .getMany();
+    if (listUser && listUser.length > 0) {
+      throw new HttpException('User exist', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     const newUser = await this.userRepo.create(userData);
     await this.userRepo.save(newUser);
+
     return newUser;
   }
 
