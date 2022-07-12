@@ -11,7 +11,9 @@ import {
 import { EmailConfirmationService } from './services/emailConfirmation.service';
 import RequestWithUser from '../auth/interfaces/requestWithUser.interface';
 import JwtAuthenticationGuard from '../auth/guards/jwt-authentication.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('email-controller')
 @Controller('email-confirmation')
 @UseInterceptors(ClassSerializerInterceptor)
 export class EmailController {

@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { GoogleStrategy } from './google.strategy';
 import { EmailModule } from './email/email.module';
 import { AlbumModule } from './album/album.module';
+import { PhotoModule } from './photo/photo.module';
 import * as Joi from 'joi';
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import * as Joi from 'joi';
     AuthModule,
     EmailModule,
     AlbumModule,
+    PhotoModule,
   ],
   controllers: [AppController],
   providers: [AppService, GoogleStrategy],

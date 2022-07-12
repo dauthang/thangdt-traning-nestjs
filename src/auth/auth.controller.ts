@@ -18,10 +18,10 @@ import express, { Request, Response } from 'express';
 import { UserDto } from '../user/dto/userDto.dto';
 import { EmailConfirmationService } from '../email/services/emailConfirmation.service';
 import { ForgotPasswordDto } from './dtos/forgot-password.dto';
-import { AuthGuard } from '@nestjs/passport';
 import { ChangePasswordDto } from './dtos/change-password.dto';
 import { GetUser } from '../components/decorators/get-user.decorator';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+@ApiTags('auth-controller')
 @Controller('auth')
 export class AuthController {
   constructor(
