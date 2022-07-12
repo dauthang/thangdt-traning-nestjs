@@ -9,6 +9,6 @@ import { UserModule } from '../user/user.module';
   imports: [JwtModule, UserModule],
   providers: [EmailService, EmailConfirmationService],
   controllers: [EmailController],
-  exports: [EmailConfirmationService],
+  exports: [EmailConfirmationService, EmailService],
 })
 export class EmailModule {}

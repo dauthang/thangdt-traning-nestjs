@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { GoogleStrategy } from './google.strategy';
 import { EmailModule } from './email/email.module';
+import { AlbumModule } from './album/album.module';
 import * as Joi from 'joi';
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import * as Joi from 'joi';
     UserModule,
     AuthModule,
     EmailModule,
+    AlbumModule,
   ],
   controllers: [AppController],
   providers: [AppService, GoogleStrategy],

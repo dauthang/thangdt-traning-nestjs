@@ -3,10 +3,12 @@ import {
   Controller,
   Get,
   HttpCode,
+  Patch,
   Post,
   Req,
   Res,
   UseGuards,
+  ValidationPipe,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthenticationGuard } from './guards/localAuthentication.guard';
@@ -15,6 +17,11 @@ import JwtAuthenticationGuard from './guards/jwt-authentication.guard';
 import express, { Request, Response } from 'express';
 import { UserDto } from '../user/dto/userDto.dto';
 import { EmailConfirmationService } from '../email/services/emailConfirmation.service';
+import { ForgotPasswordDto } from './dtos/forgot-password.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { ChangePasswordDto } from './dtos/change-password.dto';
+import { GetUser } from '../components/decorators/get-user.decorator';
+import { ApiBearerAuth } from '@nestjs/swagger';
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -53,5 +60,22 @@ export class AuthController {
     const user = request.user;
     user.password = undefined;
     return user;
+  }
+
+  @Post('/forgotPassword')
+  async forgotPassword(
+    @Body(new ValidationPipe()) forgotPasswordDto: ForgotPasswordDto,
+  ): Promise<void> {
+    return this.authService.forgotPassword(forgotPasswordDto);
+  }
+
+  @UseGuards(JwtAuthenticationGuard)
+  @ApiBearerAuth()
+  @Patch('/changePassword')
+  async changePassword(
+    @GetUser() user: RequestWithUser,
+    @Body(new ValidationPipe()) changePasswordDto: ChangePasswordDto,
+  ): Promise<boolean> {
+    return this.authService.changePassword(user.user.id, changePasswordDto);
   }
 }

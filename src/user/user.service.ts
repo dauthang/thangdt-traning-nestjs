@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { UserDto } from './dto/userDto.dto';
 import { STATUS } from '../const/constants.const';
@@ -57,6 +57,17 @@ export class UserService {
       {
         status: STATUS.ACTIVE,
       },
+    );
+  }
+
+  async updateUser(id: number, password: string) {
+    const user = await this.getById(id);
+    if (user) {
+      return await this.userRepo.save({ ...user, password });
+    }
+    throw new HttpException(
+      'User with this id does not exist',
+      HttpStatus.NOT_FOUND,
     );
   }
 }

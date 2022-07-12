@@ -34,7 +34,7 @@ export class EmailConfirmationService {
       }
       throw new BadRequestException();
     } catch (error) {
-      if (error?.name === 'TokenExpiredError') {
+      if (error?.name === '') {
         throw new BadRequestException('Email confirmation token expired');
       }
       throw new BadRequestException('Bad confirmation token');

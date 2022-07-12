@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   HttpCode,
   HttpException,
   HttpStatus,
@@ -13,17 +14,19 @@ import * as bcrypt from 'bcrypt';
 import { ErrorCode, STATUS } from '../const/constants.const';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { LocalAuthenticationGuard } from './guards/localAuthentication.guard';
-import RequestWithUser from './interfaces/requestWithUser.interface';
-import express, { Request, Response } from 'express';
 import { TokenPayload } from './interfaces/tokenPayload.interface';
 import { UserDto } from '../user/dto/userDto.dto';
+import { ForgotPasswordDto } from './dtos/forgot-password.dto';
+import EmailService from '../email/email.service';
+import VerificationTokenPayload from '../email/interfaces/verificationTokenPayload.interface';
+import { ChangePasswordDto } from './dtos/change-password.dto';
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UserService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
+    private readonly emailService: EmailService,
   ) {}
   googleLogin(req) {
     if (!req.user) {
@@ -95,5 +98,43 @@ export class AuthService {
 
   public getCookieForLogOut() {
     return `Authentication=; HttpOnly; Path=/; Max-Age=0`;
+  }
+
+  async forgotPassword(forgotPasswordDto: ForgotPasswordDto): Promise<void> {
+    const user = await this.usersService.getByEmail(forgotPasswordDto.email);
+    if (!user) {
+      throw new BadRequestException('Invalid email');
+    }
+    const payload: VerificationTokenPayload = {
+      name: user?.name,
+      email: user.email,
+    };
+    const token = this.jwtService.sign(payload, {
+      secret: this.configService.get('JWT_VERIFICATION_TOKEN_SECRET'),
+      expiresIn: `${this.configService.get(
+        'JWT_VERIFICATION_TOKEN_EXPIRATION_TIME',
+      )}`,
+    });
+    const forgotLink = `${this.configService.get(
+      'CLIENT_APP_URL',
+    )}/auth/forgotPassword?token=${token}`;
+    return this.emailService.sendMail({
+      from: `<${this.configService.get('MAIL_FROM')}>`,
+      to: `${user?.name} <${user.email}>`,
+      subject: 'Forgot Password',
+      html: `
+                <h3>Hello ${user.name}!</h3>
+                <p>Please use this <a href="${forgotLink}">link</a> to reset your password.</p>
+            `,
+    });
+  }
+
+  async changePassword(
+    userId: number,
+    changePasswordDto: ChangePasswordDto,
+  ): Promise<boolean> {
+    const password = await bcrypt.hash(changePasswordDto.password, 10);
+    await this.usersService.updateUser(userId, password);
+    return true;
   }
 }
