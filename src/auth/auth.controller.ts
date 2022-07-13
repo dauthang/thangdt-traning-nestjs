@@ -5,6 +5,7 @@ import {
   HttpCode,
   Patch,
   Post,
+  Put,
   Req,
   Res,
   UseGuards,
@@ -19,7 +20,6 @@ import { UserDto } from '../user/dto/userDto.dto';
 import { EmailConfirmationService } from '../email/services/emailConfirmation.service';
 import { ForgotPasswordDto } from './dtos/forgot-password.dto';
 import { ChangePasswordDto } from './dtos/change-password.dto';
-import { GetUser } from '../components/decorators/get-user.decorator';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 @ApiTags('auth-controller')
 @Controller('auth')
@@ -64,18 +64,18 @@ export class AuthController {
 
   @Post('/forgotPassword')
   async forgotPassword(
-    @Body(new ValidationPipe()) forgotPasswordDto: ForgotPasswordDto,
+    @Body() forgotPasswordDto: ForgotPasswordDto,
   ): Promise<void> {
     return this.authService.forgotPassword(forgotPasswordDto);
   }
 
   @UseGuards(JwtAuthenticationGuard)
   @ApiBearerAuth()
-  @Patch('/changePassword')
+  @Put('/changePassword')
   async changePassword(
-    @GetUser() user: RequestWithUser,
-    @Body(new ValidationPipe()) changePasswordDto: ChangePasswordDto,
+    @Req() request: RequestWithUser,
+    @Body() changePasswordDto: ChangePasswordDto,
   ): Promise<boolean> {
-    return this.authService.changePassword(user.user.id, changePasswordDto);
+    return this.authService.changePassword(request.user.id, changePasswordDto);
   }
 }

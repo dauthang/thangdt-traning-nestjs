@@ -2,39 +2,37 @@ import {
   Body,
   Controller,
   Post,
+  Req,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 
 import { PhotoService } from './photo.service';
-import { CreateAlbumDto } from '../album/dtos/albumDto.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileDto } from '../album/dtos/fileDto.dto';
-
+import JwtAuthenticationGuard from '../auth/guards/jwt-authentication.guard';
+import RequestWithUser from '../auth/interfaces/requestWithUser.interface';
+import { CreatePhotoDto } from './dtos/photo.dto';
+import LocalFilesInterceptor from '../components/interceptors/localFiles.interceptor';
 @ApiTags('photo-controller')
 @Controller('photo')
 export class PhotoController {
   constructor(private readonly photoService: PhotoService) {}
 
   @Post()
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        file: {
-          type: 'string',
-          format: 'binary',
-        },
-      },
-    },
-  })
-  @UseInterceptors(FileInterceptor('file'))
+  @UseGuards(JwtAuthenticationGuard)
+  @UseInterceptors(
+    LocalFilesInterceptor({
+      fieldName: 'file',
+      path: '/imgPhoto',
+    }),
+  )
   create(
+    @Req() request: RequestWithUser,
     @UploadedFile() file: FileDto,
-    @Body() createAlbumDto: CreateAlbumDto,
+    @Body() createPhotoDto: CreatePhotoDto,
   ) {
-    return this.photoService.create(file, createAlbumDto);
+    return this.photoService.create(request.user, file, createPhotoDto);
   }
 }

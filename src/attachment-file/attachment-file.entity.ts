@@ -2,21 +2,15 @@ import { Entity, Column, PrimaryGeneratedColumn, Timestamp } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
-export class Photo {
+export class AttachmentFile {
   @PrimaryGeneratedColumn()
   id: number;
   @Column()
   @ApiProperty()
-  name: string;
+  photoId: number;
   @ApiProperty()
   @Column()
-  userId: number;
-  @ApiProperty()
-  @Column()
-  albumId: number;
-  @ApiProperty()
-  @Column()
-  link: string;
+  fileName: string;
   @ApiProperty()
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)' })
   createdAt: Date;
@@ -27,5 +21,5 @@ export class Photo {
   })
   updatedAt: Date;
   @Column()
-  status: string;
+  isDelete: boolean;
 }

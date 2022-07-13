@@ -8,8 +8,6 @@ export class CreateAlbumDto {
   @ApiProperty()
   @IsNotEmpty()
   description: string;
-  @ApiProperty()
-  @IsNotEmpty()
   createdAt: Date;
   updatedAt: Date;
   status: string;

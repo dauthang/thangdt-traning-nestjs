@@ -9,6 +9,7 @@ import { GoogleStrategy } from './google.strategy';
 import { EmailModule } from './email/email.module';
 import { AlbumModule } from './album/album.module';
 import { PhotoModule } from './photo/photo.module';
+import { AttachmentFileModule } from './attachment-file/attachment-file.module';
 import * as Joi from 'joi';
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import * as Joi from 'joi';
     EmailModule,
     AlbumModule,
     PhotoModule,
+    AttachmentFileModule,
   ],
   controllers: [AppController],
   providers: [AppService, GoogleStrategy],
