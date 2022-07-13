@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.29, for Win64 (x86_64)
 --
--- Host: localhost    Database: mydb
+-- Host: 127.0.0.1    Database: mydb
 -- ------------------------------------------------------
 -- Server version	8.0.29
 
@@ -24,14 +24,16 @@ DROP TABLE IF EXISTS `photo`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `photo` (
   `id` int NOT NULL,
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `userId` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `albumId` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `link` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8_unicode_ci NOT NULL,
+  `userId` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8_unicode_ci NOT NULL,
+  `albumId` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8_unicode_ci NOT NULL,
+  `link` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8_unicode_ci NOT NULL,
   `createdAt` timestamp(1) NOT NULL,
   `updatedAt` timestamp(1) NULL DEFAULT NULL,
-  `status` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
+  `status` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_album_id` FOREIGN KEY (`id`) REFERENCES `album` (`id`),
+  CONSTRAINT `fk_user_id` FOREIGN KEY (`id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -53,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-07-10 19:53:09
+-- Dump completed on 2022-07-13 17:02:18

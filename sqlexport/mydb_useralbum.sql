@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.29, for Win64 (x86_64)
 --
--- Host: localhost    Database: mydb
+-- Host: 127.0.0.1    Database: mydb
 -- ------------------------------------------------------
 -- Server version	8.0.29
 
@@ -23,8 +23,8 @@ DROP TABLE IF EXISTS `useralbum`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `useralbum` (
-  `albumId` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `userId` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `albumId` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8_unicode_ci NOT NULL,
+  `userId` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`albumId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -47,4 +47,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-07-10 19:53:09
+-- Dump completed on 2022-07-13 17:02:18

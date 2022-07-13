@@ -16,30 +16,32 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `album`
+-- Table structure for table `attachmentfile`
 --
 
-DROP TABLE IF EXISTS `album`;
+DROP TABLE IF EXISTS `attachmentfile`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `album` (
+CREATE TABLE `attachmentfile` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `description` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `createdAt` timestamp(1) NOT NULL,
+  `photoId` int NOT NULL,
+  `fileName` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `createdAt` timestamp(1) NULL DEFAULT NULL,
   `updatedAt` timestamp(1) NULL DEFAULT NULL,
-  `status` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+  `isDelete` tinyint DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_photo_id_idx` (`photoId`),
+  CONSTRAINT `fk_photo_id` FOREIGN KEY (`photoId`) REFERENCES `photo` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `album`
+-- Dumping data for table `attachmentfile`
 --
 
-LOCK TABLES `album` WRITE;
-/*!40000 ALTER TABLE `album` DISABLE KEYS */;
-/*!40000 ALTER TABLE `album` ENABLE KEYS */;
+LOCK TABLES `attachmentfile` WRITE;
+/*!40000 ALTER TABLE `attachmentfile` DISABLE KEYS */;
+/*!40000 ALTER TABLE `attachmentfile` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

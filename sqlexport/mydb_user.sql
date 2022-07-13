@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.29, for Win64 (x86_64)
 --
--- Host: localhost    Database: mydb
+-- Host: 127.0.0.1    Database: mydb
 -- ------------------------------------------------------
 -- Server version	8.0.29
 
@@ -24,15 +24,15 @@ DROP TABLE IF EXISTS `user`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `userName` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8_unicode_ci NOT NULL,
+  `userName` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8_unicode_ci NOT NULL,
   `createdAt` timestamp(1) NOT NULL,
   `updatedAt` timestamp(1) NOT NULL,
-  `status` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
+  `status` varchar(25) CHARACTER SET utf8mb3 COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +41,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'thang','dauthang','$2b$10$tlFvz4Z6uZMV.JXT/4KWOOF0a/wSsKwsnlQE.9OVJhhu77F3kJi9q','thangdt@vmodev.com','2022-07-09 10:29:32.7','2022-07-09 10:29:32.7','ACTIVE'),(2,'thang','dauthang','$2b$10$zrvSuZb70EL0ElHfbvvMde4WjbZgRuqOjlESrg//qHy3XhrEciYc.','thangdt@vmodev.com','2022-07-09 11:20:01.2','2022-07-09 11:20:01.2','CONFIRM'),(3,'thang','dauthang','$2b$10$2400/4ss7KKKsKz72Bska.WNFGJnYpgx40ZPxJRSeH40qmkg/NOJy','thangdt@vmodev.com','2022-07-09 11:20:01.2','2022-07-09 11:20:01.2','CONFIRM'),(4,'thang','dauthang','$2b$10$anX01XCIbr9W6ep5xRlfiO3NN1Hd7ED7AsOyGQBZ1alV5WRoN7hZS','thangdt@vmodev.com','2022-07-09 11:20:01.2','2022-07-09 11:20:01.2','CONFIRM');
+INSERT INTO `user` VALUES (49,'thang','thangdt','$2b$10$Af3/LaicSte5jTmSkOKbQ.MLbegZHBQcuQuSlJHmEeU2gIqP991dC','thangdau811@gmail.com','2022-07-13 03:13:01.8','2022-07-13 03:13:01.8','ACTIVE');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-07-10 19:53:09
+-- Dump completed on 2022-07-13 17:02:18
