@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, Timestamp } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  Timestamp,
+  Table,
+} from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()

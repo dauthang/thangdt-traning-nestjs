@@ -24,6 +24,7 @@ export class AlbumService {
     return await this.albumRepository.save({
       ...createUserDto,
       status: STATUS.ACTIVE,
+      createdAt: new Date(),
     });
   }
 

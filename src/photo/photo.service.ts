@@ -7,6 +7,7 @@ import { CreatePhotoDto } from './dtos/photo.dto';
 import { AlbumService } from '../album/album.service';
 import { AttachmentFileService } from '../attachment-file/attachment-file.service';
 import { FileDto } from '../attachment-file/dtos/fileDto.dto';
+import { STATUS } from '../const/constants.const';
 
 @Injectable()
 export class PhotoService {
@@ -21,17 +22,23 @@ export class PhotoService {
     createPhotoDto.userId = user.id;
     createPhotoDto.createdAt = new Date();
     await this.albumService.findOne(createPhotoDto.albumId);
-    const photo = this.photoRepository.findOneBy({ name: createPhotoDto.name });
+    const photo = await this.photoRepository.findOneBy({
+      name: createPhotoDto.name,
+    });
     if (photo) {
       throw new HttpException(
         'Photo with this name is exist',
         HttpStatus.NOT_FOUND,
       );
     }
-    const photoNew = await this.photoRepository.save(createPhotoDto);
+    const photoNew = await this.photoRepository.create({
+      ...createPhotoDto,
+      status: STATUS.ACTIVE,
+    });
+    await this.photoRepository.save(photoNew);
     const fileDto: FileDto = {
       photoId: photoNew.id,
-      fileName: String(file?.fileName),
+      fileName: String(file?.filename),
       createdAt: new Date(),
     };
     // save file
