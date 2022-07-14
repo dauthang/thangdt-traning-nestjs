@@ -30,7 +30,7 @@ export class AlbumController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.albumService.findOne(+id);
+    return this.albumService.findOne(id);
   }
 
   @Patch(':id')

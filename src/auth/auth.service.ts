@@ -88,7 +88,7 @@ export class AuthService {
     }
   }
 
-  public getCookieWithJwtToken(userId: number) {
+  public getCookieWithJwtToken(userId: string) {
     const payload: TokenPayload = { userId };
     const token = this.jwtService.sign(payload);
     return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get(
@@ -130,7 +130,7 @@ export class AuthService {
   }
 
   async changePassword(
-    userId: number,
+    userId: string,
     changePasswordDto: ChangePasswordDto,
   ): Promise<boolean> {
     const password = await bcrypt.hash(changePasswordDto.password, 10);

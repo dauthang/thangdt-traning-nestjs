@@ -40,7 +40,7 @@ export class UserService {
     return newUser;
   }
 
-  async getById(id: number) {
+  async getById(id: string) {
     const user = await this.userRepo.findOneBy({ id });
     if (user) {
       return user;
@@ -60,7 +60,7 @@ export class UserService {
     );
   }
 
-  async updateUser(id: number, password: string) {
+  async updateUser(id: string, password: string) {
     const user = await this.getById(id);
     if (user) {
       return await this.userRepo.save({ ...user, password });

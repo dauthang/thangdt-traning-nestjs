@@ -1,5 +1,5 @@
 export class FileDto {
-  photoId: number;
+  photoId: string;
   fileName: string;
   createdAt: Date;
   updatedAt?: Date;

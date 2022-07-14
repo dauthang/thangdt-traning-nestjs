@@ -5,10 +5,10 @@ import { IsNotEmpty, IsString } from 'class-validator';
 export class CreatePhotoDto {
   @ApiProperty()
   name: string;
-  userId: number;
+  userId: string;
   @ApiProperty()
   @IsNotEmpty()
-  albumId: number;
+  albumId: string;
   @ApiProperty()
   link: string;
   createdAt: Date;

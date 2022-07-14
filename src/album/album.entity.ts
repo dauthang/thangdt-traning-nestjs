@@ -3,8 +3,8 @@ import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class Album {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
   @Column()
   @ApiProperty()
   name: string;

@@ -3,17 +3,17 @@ import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class Photo {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
   @Column()
   @ApiProperty()
   name: string;
   @ApiProperty()
   @Column()
-  userId: number;
+  userId: string;
   @ApiProperty()
   @Column()
-  albumId: number;
+  albumId: string;
   @ApiProperty()
   @Column()
   link: string;

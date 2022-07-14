@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.29, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: mydb
+-- Host: localhost    Database: mydb
 -- ------------------------------------------------------
 -- Server version	8.0.29
 
@@ -23,16 +23,16 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8_unicode_ci NOT NULL,
+  `id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `userName` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8_unicode_ci NOT NULL,
-  `createdAt` timestamp(1) NOT NULL,
-  `updatedAt` timestamp(1) NOT NULL,
+  `createdAt` timestamp(1) NULL DEFAULT NULL,
+  `updatedAt` timestamp(1) NULL DEFAULT NULL,
   `status` varchar(25) CHARACTER SET utf8mb3 COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +41,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (49,'thang','thangdt','$2b$10$Af3/LaicSte5jTmSkOKbQ.MLbegZHBQcuQuSlJHmEeU2gIqP991dC','thangdau811@gmail.com','2022-07-13 03:13:01.8','2022-07-13 03:13:01.8','ACTIVE');
+INSERT INTO `user` VALUES ('c2363ab6-48ee-4e62-a423-97c7a55e246b','123','thang','$2b$10$GdZskeTVPRFgJ9H0ejA7/O4wDtInTptKGB8ElM0209KZGQYoGKOcq','thangdt@vmodev.com','2022-07-14 16:58:54.6','2022-07-14 16:58:54.6','ACTIVE');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-07-14 16:32:06
+-- Dump completed on 2022-07-15  0:54:42

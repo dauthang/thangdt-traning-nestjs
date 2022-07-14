@@ -9,11 +9,11 @@ import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class AttachmentFile {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
   @Column()
   @ApiProperty()
-  photoId: number;
+  photoId: string;
   @ApiProperty()
   @Column()
   fileName: string;
