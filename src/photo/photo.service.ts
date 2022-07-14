@@ -40,6 +40,7 @@ export class PhotoService {
       photoId: photoNew.id,
       fileName: String(file?.filename),
       createdAt: new Date(),
+      path: file?.path,
     };
     // save file
     await this.attachmentFileService.create(fileDto);

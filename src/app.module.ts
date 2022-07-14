@@ -11,6 +11,8 @@ import { AlbumModule } from './album/album.module';
 import { PhotoModule } from './photo/photo.module';
 import { AttachmentFileModule } from './attachment-file/attachment-file.module';
 import * as Joi from 'joi';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { TransformInterceptor } from './components/interceptors/transform.interceptor';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -43,6 +45,10 @@ import * as Joi from 'joi';
     AttachmentFileModule,
   ],
   controllers: [AppController],
-  providers: [AppService, GoogleStrategy],
+  providers: [
+    AppService,
+    GoogleStrategy,
+    { provide: APP_INTERCEPTOR, useClass: TransformInterceptor },
+  ],
 })
 export class AppModule {}

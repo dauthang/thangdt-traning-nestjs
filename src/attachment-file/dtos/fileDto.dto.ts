@@ -4,4 +4,5 @@ export class FileDto {
   createdAt: Date;
   updatedAt?: Date;
   isDelete?: boolean;
+  path: string;
 }

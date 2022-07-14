@@ -28,4 +28,6 @@ export class AttachmentFile {
   updatedAt: Date;
   @Column()
   isDelete: boolean;
+  @Column()
+  path: string;
 }

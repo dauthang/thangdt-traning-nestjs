@@ -25,8 +25,9 @@ function LocalFilesInterceptor(
       const multerOptions: MulterOptions = {
         storage: diskStorage({
           destination,
+          filename: editFileName,
         }),
-        fileFilter: options.fileFilter,
+        fileFilter: imageFileFilter,
         limits: options.limits,
       };
 
@@ -43,4 +44,19 @@ function LocalFilesInterceptor(
   return mixin(Interceptor);
 }
 
+export const editFileName = (req, file, callback) => {
+  const fileExtName = file.originalname;
+  const randomName = Array(4)
+    .fill(null)
+    .map(() => Math.round(Math.random() * 16).toString(16))
+    .join('');
+  callback(null, `${randomName}-${fileExtName}`);
+};
+
+export const imageFileFilter = (req, file, callback) => {
+  if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+    return callback(new Error('Only image files are allowed!'), false);
+  }
+  callback(null, true);
+};
 export default LocalFilesInterceptor;

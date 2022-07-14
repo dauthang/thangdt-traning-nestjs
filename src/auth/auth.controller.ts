@@ -62,7 +62,7 @@ export class AuthController {
     return user;
   }
 
-  @Post('/forgotPassword')
+  @Post('/forgot-password')
   async forgotPassword(
     @Body() forgotPasswordDto: ForgotPasswordDto,
   ): Promise<void> {
@@ -71,7 +71,7 @@ export class AuthController {
 
   @UseGuards(JwtAuthenticationGuard)
   @ApiBearerAuth()
-  @Put('/changePassword')
+  @Put('/change-password')
   async changePassword(
     @Req() request: RequestWithUser,
     @Body() changePasswordDto: ChangePasswordDto,
